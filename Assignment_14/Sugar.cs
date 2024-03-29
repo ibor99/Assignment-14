@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Assignment_14
 {
-    public class CustomCoffee : Coffee
+    public class Sugar
     {
-        public string BaseRecipeName { get; set; }
+        public int Quantity { get; set; }
     }
-
 }

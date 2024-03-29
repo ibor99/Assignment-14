@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment_14
 {
-    interface ICoffee
+    public class Cappuccino : Coffee
     {
-        string Description { get; }
-        string Name { get; }
     }
 }

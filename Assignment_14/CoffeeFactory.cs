@@ -3,41 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Assignment_14.Milk;
 
 namespace Assignment_14
 {
-    class CoffeeFactory : ICoffeeFactory
+    public class CoffeeFactory
     {
-        private readonly Dictionary<string, Func<ICoffee>> _coffeeRecipes;
-
-        private CoffeeFactory() 
+        public Coffee CreateCoffee(int blackCoffeeShots, Milk milk, Sugar sugar)
         {
-            _coffeeRecipes = new Dictionary<string, Func<ICoffee>>();
-            RegisterCoffee("Espresso", () => new BlackCoffee());
-            RegisterCoffee("Cappuccino", () => new CustomCoffee(new BlackCoffee(), new List<string> { "Milk"},"Cappuccino"));
-            RegisterCoffee("FlatWhite", () => new CustomCoffee(new BlackCoffee(), new List<string> { "Black Coffee", "Milk" }, "FlatWhite"));
-        }
-
-        private void RegisterCoffee(string type, Func<ICoffee> source)
-        {
-            _coffeeRecipes[type] = source;
-        }
-
-        public ICoffee CreateCoffee(string type) 
-        {
-            if(_coffeeRecipes.ContainsKey(type))
+            if (blackCoffeeShots == 1 && milk.Type == MilkType.None && sugar.Quantity == 0 && milk.Quantity == 0)
             {
-                return _coffeeRecipes[type]();
+                return new Espresso();
             }
+            else if (blackCoffeeShots == 2 && milk.Type != MilkType.None && sugar.Quantity == 0 && milk.Quantity == 1)
+            {
+                return new FlatWhite();
+            }
+            else if (blackCoffeeShots == 1 && milk.Type != MilkType.None && sugar.Quantity == 0 && milk.Quantity == 1)
+            {
+                return new Cappuccino();
+            }
+            else
+            {
+                var customedCoffee = new CustomCoffee
+                {
+                    BlackCoffeeShots = blackCoffeeShots,
+                    Milk = new Milk {                         Type = milk.Type,
+                                           Quantity = milk.Quantity
+                                       },
+                    Sugar = new Sugar { Quantity = sugar.Quantity }
+                };
 
-            throw new ArgumentException($"Unknown coffee type : {type}");
+                if (blackCoffeeShots == 1 && milk.Type != MilkType.None)
+                {
+                    customedCoffee.BaseRecipeName = "Cappuccino";
+                }
+                else if (blackCoffeeShots == 2 && milk.Type != MilkType.None)
+                {
+                    customedCoffee.BaseRecipeName = "Flat White";
+                }
+                else
+                {
+                    customedCoffee.BaseRecipeName = "Espresso";
+                }
+
+                return customedCoffee;
+
+            }
         }
-
-        //Singleton
-        private static CoffeeFactory _instance;
-        public static CoffeeFactory Instance => _instance ??= new CoffeeFactory();// null coalescing if _instance is null(right side of '??=') the right side happens
-
-        //factory
-        public ICoffee CreateCoffee() => CreateCoffee("Espresso");
     }
 }

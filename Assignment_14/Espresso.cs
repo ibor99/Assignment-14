@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment_14
 {
-    interface ICoffeeFactory
+    public class Espresso : Coffee
     {
-        ICoffee CreateCoffee();
     }
 }

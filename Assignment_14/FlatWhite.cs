@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace Assignment_14
 {
-    class BlackCoffee : ICoffee
+    public class FlatWhite : Coffee 
     {
-        public string Description => "Black Coffee";
 
-        public string Name => "Black Coffee";
     }
 }
